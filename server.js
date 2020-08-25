@@ -26,7 +26,9 @@ sequelize.sync(
     // great for maching changes to the Sequelize models, as the database
     // would need a way to understand that something has changed.
     // might need to do a few times but set to false for now.
-    force: false  
+    //** we set this true now because if its false the we will get
+    // a foreign key constraint error 
+    force: true  
   }
 )
 .then(() => {
