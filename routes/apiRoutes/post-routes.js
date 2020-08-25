@@ -1,6 +1,6 @@
 const router = require('express').Router();
 //including user into the post routes so we can do JOIN's at some point
-const { Post, User } = require('../../models');
+const { Post, User, Vote } = require('../../models');
 
 //route to retrieve all posts in the database
 
@@ -36,6 +36,10 @@ router.get('/', (req, res) => {
 
 //get-one single post
 router.get('/:id', (req, res) => {
+  console.log(`
+  
+  `)
+  console.log('\x1b[33m', 'client request for all posts by a single user_id', '\x1b[00m');
   Post.findOne(
     {
       where: {
@@ -59,6 +63,7 @@ router.get('/:id', (req, res) => {
       );
       return;
     } else {
+      console.log(dbPostData);
       res.json(dbPostData);
     }
   })
@@ -71,6 +76,10 @@ router.get('/:id', (req, res) => {
 //create a post, user_id who posted it included!
 router.post('/', (req, res) => {
   // expects {title: 'title of post', post_url: 'http://someurl.com', user_id: 1}
+  console.log(`
+  
+  `)
+  console.log('\x1b[33m', 'client request for user to make a post', '\x1b[00m');
   Post.create(
     {
       title: req.body.title,
@@ -90,6 +99,10 @@ router.post('/', (req, res) => {
 
 //update a posts title
 router.put('/:id', (req, res) => {
+  console.log(`
+  
+  `)
+  console.log('\x1b[33m', 'client request to update a post title by id ', '\x1b[00m');
   Post.update(
     {
       title: req.body.title
@@ -121,6 +134,10 @@ router.put('/:id', (req, res) => {
 
 //delete a post by id
 router.delete('/:id', (req, res) => {
+  console.log(`
+  
+  `)
+  console.log('\x1b[33m', 'client request to delete a post', '\x1b[00m');
   Post.destroy(
     {
       where: {
@@ -145,6 +162,25 @@ router.delete('/:id', (req, res) => {
     console.log(err);
     res.status(500).json(err);
   });
+});
+
+//PUT upvote /api/posts/upvote
+router.put('/upvote', (req, res) => {
+  console.log(`
+  
+  `)
+  console.log('\x1b[33m', 'client request to update a post by casting an upvote by user_id and post_id', '\x1b[00m');+
+  Vote.create(
+    {
+      user_id: req.body.user_id,
+      post_id: req.body.post_id
+    }
+  )
+  .then(dbPostData => {
+    console.log(dbPostData);
+    res.json(dbPostData);
+  })
+  .catch(err => err.json(err));
 });
 
 module.exports = router;
