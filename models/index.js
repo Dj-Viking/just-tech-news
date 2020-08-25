@@ -1,5 +1,6 @@
 const User = require('./User.js');
 const Post = require('./Post.js');
+const Vote = require('./Vote.js');
 
 //one user can have many posts...but only a post only has one user
 User.hasMany(Post, 
@@ -8,10 +9,49 @@ User.hasMany(Post,
   }
 );
 
+User.belongsToMany(Post,
+  {
+    through: Vote,
+    as: 'voted_posts',
+    foreignKey: 'user_id'
+  }
+);
+
 Post.belongsTo(User, 
   {
     foreignKey: 'user_id'
   }
-)
+);
 
-module.exports = { User, Post };
+Post.belongsToMany(User,
+  {
+    through: Vote,
+    as: 'voted_posts',
+    foreignKey: 'post_id'
+  }
+);
+
+Vote.belongsTo(User, 
+  {
+    foreignKey: 'user_id'
+  }
+);
+Vote.belongsTo(Post, 
+  {
+    foreignKey: 'post_id'
+  }  
+);
+
+User.hasMany(Vote, 
+  {
+    foreignKey: 'user_id'
+  }  
+);
+Post.hasMany(Vote, 
+  {
+    foreignKey: 'post_id'
+  }  
+);
+
+
+module.exports = { User, Post, Vote };
