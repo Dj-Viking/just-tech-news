@@ -15,7 +15,10 @@ router.get('/', (req, res) => {
       }
     }
   )
-  .then(dbUserData => res.json(dbUserData))
+  .then(dbUserData => {
+    console.log(dbUserData);
+    return res.json(dbUserData);
+  })
   .catch(err => {
     console.log(err);
     res.status(500).json(err);
@@ -47,6 +50,7 @@ router.get('/:id', (req, res) => {
       );
       return;
     } else {
+      console.log(dbUserData);
       res.json(dbUserData);
     }
   })
@@ -70,7 +74,10 @@ router.post('/', (req, res) => {
       password: req.body.password
     }  
   )
-  .then(dbUserData => res.json(dbUserData))
+  .then(dbUserData => {
+    console.log(dbUserData);
+    res.json(dbUserData)
+  })
   .catch(err => {
     console.log(err);
     res.status(500).json(err);
@@ -88,6 +95,7 @@ router.put('/:id', (req, res) => {
   User.update(
     req.body, 
     {
+      individualHooks: true,
       where: {
         id: req.params.id
       }
@@ -102,7 +110,9 @@ router.put('/:id', (req, res) => {
       );
       return;
     } else {
-      res.json(dbUserData);
+      //console.log(dbUserData);
+      console.log(dbUserData[1]);
+      res.json(dbUserData[1]);
     }
   })
   .catch(err => {
@@ -133,6 +143,7 @@ router.delete('/:id', (req, res) => {
       );
       return;
     } else {
+      console.log(dbUserData);
       res.json(dbUserData);
     }
   })
