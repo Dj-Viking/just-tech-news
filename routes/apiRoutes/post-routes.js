@@ -13,6 +13,8 @@ router.get('/', (req, res) => {
     {
       //query config
       attributes: ['id', 'post_url', 'title', 'created_at'],
+      //show posts in descending order by timestamp
+      order: [['created_at', 'DESC']],
       //JOIN 
       include: [
         {
@@ -106,6 +108,34 @@ router.put('/:id', (req, res) => {
         }
       );
       return;
+    } else {
+      console.log(dbPostData);
+      res.json(dbPostData);
+    }
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json(err);
+  });
+});
+
+//delete a post by id
+router.delete('/:id', (req, res) => {
+  Post.destroy(
+    {
+      where: {
+        id: req.params.id
+      }
+    }
+  )
+  .then(dbPostData => {
+    if (!dbPostData) {
+      res.status(404).json(
+        {
+          message: 'No post found with this id'
+        }
+      );
+        return;
     } else {
       console.log(dbPostData);
       res.json(dbPostData);
