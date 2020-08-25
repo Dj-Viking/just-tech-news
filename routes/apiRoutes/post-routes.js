@@ -66,5 +66,56 @@ router.get('/:id', (req, res) => {
   });
 });
 
+//create a post, user_id who posted it included!
+router.post('/', (req, res) => {
+  // expects {title: 'title of post', post_url: 'http://someurl.com', user_id: 1}
+  Post.create(
+    {
+      title: req.body.title,
+      post_url: req.body.post_url,
+      user_id: req.body.user_id
+    }
+  )
+  .then(dbPostData => {
+    console.log(dbPostData);
+    res.json(dbPostData);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json(err);
+  });
+});
+
+//update a posts title
+router.put('/:id', (req, res) => {
+  Post.update(
+    {
+      title: req.body.title
+    },
+    {
+      where: {
+        id: req.params.id
+      }
+    }
+  )
+  .then(dbPostData => {
+    if (!dbPostData) {
+      res.status(404).json(
+        {
+          message: 'No post found with that user id.'
+        }
+      );
+      return;
+    } else {
+      console.log(dbPostData);
+      res.json(dbPostData);
+    }
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json(err);
+  });
+});
+
 module.exports = router;
 
