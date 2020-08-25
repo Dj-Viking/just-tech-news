@@ -40,9 +40,11 @@ router.get('/:id', (req, res) => {
   )
   .then(dbUserData => {
     if (!dbUserData) {
-      res.status(404).json({
-        message: 'No user found with this id'
-      });
+      res.status(404).json(
+        {
+          message: 'No user found with this id'
+        }
+      );
       return;
     } else {
       res.json(dbUserData);
@@ -61,11 +63,13 @@ router.post('/', (req, res) => {
   `)
   console.log('\x1b[33m', 'client request for add a user', '\x1b[00m');
   //👇 expects {username: 'name', email: 'email', password: 'password'}
-  User.create({
-    username: req.body.username,
-    email: req.body.email,
-    password: req.body.password
-  })
+  User.create(
+    {
+      username: req.body.username,
+      email: req.body.email,
+      password: req.body.password
+    }  
+  )
   .then(dbUserData => res.json(dbUserData))
   .catch(err => {
     console.log(err);
@@ -81,16 +85,21 @@ router.put('/:id', (req, res) => {
   console.log('\x1b[33m', 'client request for update a user', '\x1b[00m');
   //👇 expects {username: 'name', email: 'email', password: 'password'}
   //****if req.body has exact key/value pairs to match the model, you can just use req.body instead 
-  User.update(req.body, {
-    where: {
-      id: req.params.id
+  User.update(
+    req.body, 
+    {
+      where: {
+        id: req.params.id
+      }
     }
-  })
+  )
   .then(dbUserData => {
     if (!dbUserData[0]) {
-      res.status(404).json({
-        message: 'No user found with this id'
-      });
+      res.status(404).json(
+        {
+          message: 'No user found with this id'
+        }
+      );
       return;
     } else {
       res.json(dbUserData);
@@ -108,16 +117,20 @@ router.delete('/:id', (req, res) => {
   
   `)
   console.log('\x1b[33m', 'client request for delete a user', '\x1b[00m');
-  User.destroy({
-    where: {
-      id: req.params.id
+  User.destroy(
+    {
+      where: {
+        id: req.params.id
+      }
     }
-  })
+  )
   .then(dbUserData => {
     if (!dbUserData) {
-      res.status(404).json({
-        message: 'No user found with this id'
-      });
+      res.status(404).json(
+        {
+          message: 'No user found with this id'
+        }
+      );
       return;
     } else {
       res.json(dbUserData);
