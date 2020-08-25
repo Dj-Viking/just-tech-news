@@ -8,7 +8,13 @@ router.get('/', (req, res) => {
   `)
   console.log('\x1b[33m', 'client request for all users', '\x1b[00m');
   //Access our User Model and run .findAll() method)
-  User.findAll()
+  User.findAll(
+    {
+      attributes: {
+        exclude: ['password']
+      }
+    }
+  )
   .then(dbUserData => res.json(dbUserData))
   .catch(err => {
     console.log(err);
@@ -22,11 +28,16 @@ router.get('/:id', (req, res) => {
   
   `)
   console.log('\x1b[33m', 'client request for single user', '\x1b[00m');
-  User.findOne({
-    where: {
-      id: req.params.id
+  User.findOne(
+    {
+      attributes: {
+        exclude: ['password']
+      },
+      where: {
+        id: req.params.id
+      }
     }
-  })
+  )
   .then(dbUserData => {
     if (!dbUserData) {
       res.status(404).json({
