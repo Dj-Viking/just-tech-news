@@ -26,8 +26,10 @@ sequelize.sync(
     // great for maching changes to the Sequelize models, as the database
     // would need a way to understand that something has changed.
     // might need to do a few times but set to false for now.
-    //** we set this true now because if its false the we will get
+    //** we set this true now because if its false the we might get
     // a foreign key constraint error 
+    // this actually resets the database to be empty, false keeps the
+    // old data there after the node instance disconnects.
     force: true  
   }
 )
