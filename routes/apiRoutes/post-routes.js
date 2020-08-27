@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const sequelize = require('../../config/connection.js');
 //including user into the post routes so we can do JOIN's at some point
 const { Post, User, Vote } = require('../../models');
 
@@ -12,7 +13,17 @@ router.get('/', (req, res) => {
   Post.findAll(
     {
       //query config
-      attributes: ['id', 'post_url', 'title', 'created_at'],
+      attributes: [
+        'id', 
+        'post_url', 
+        'title', 
+        'created_at',
+        [
+          sequelize.literal(
+          '(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'
+          ), 'vote_count'//property name of the select count value
+        ]
+      ],
       //show posts in descending order by timestamp
       order: [['created_at', 'DESC']],
       //JOIN 
@@ -45,7 +56,17 @@ router.get('/:id', (req, res) => {
       where: {
         id: req.params.id
       },
-      attributes: ['id', 'post_url', 'title', 'created_at'],
+      attributes: [
+        'id', 
+        'post_url', 
+        'title', 
+        'created_at',
+        [
+          sequelize.literal(
+            '(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'
+          ), 'vote_count'
+        ]
+      ],
       include: [
         {
           model: User,
@@ -98,32 +119,34 @@ router.post('/', (req, res) => {
 });
 
 //PUT upvote /api/posts/upvote
-router.put('/upvote', (req, res) => {
-  console.log(`
-  
-  `)
-  console.log('\x1b[33m', 'client request to update a post by casting an upvote by user_id and post_id', '\x1b[00m');
-  Vote.create({
-    user_id: req.body.user_id,
-    post_id: req.body.post_id
-  })
-    .then(dbPostData => res.json(dbPostData))
-    .catch(err => res.json(err));
-});
-
+//user_id is who is voting and post_id is the post the user is voting on
 // router.put('/upvote', (req, res) => {
-  // console.log(`
+//   console.log(`
   
-  // `)
-  // console.log('\x1b[33m', 'client request to update a post by casting an upvote by user_id and post_id', '\x1b[00m');
-//   // custom static method created in models/Post.js
-//   Post.upvote(req.body, { Vote })
-//     .then(updatedPostData => res.json(updatedPostData))
-//     .catch(err => {
-//       console.log(err);
-//       res.status(400).json(err);
-//     });
+//   `)
+//   console.log('\x1b[33m', 'client request to update a post by casting an upvote by user_id and post_id', '\x1b[00m');
+//   Vote.create({
+//     user_id: req.body.user_id,
+//     post_id: req.body.post_id
+//   })
+//     .then(dbPostData => res.json(dbPostData))
+//     .catch(err => res.json(err));
 // });
+
+//PUT upvote /api/posts/upvote
+//user_id is who is voting and post_id is the post the user is voting on
+router.put('/upvote', (req, res) => {
+  //custom static method created in models/Post.js
+  Post.upvote(req.body, { Vote })
+  .then(updatedPostData => {
+    console.log(updatedPostData);
+    res.json(updatedPostData);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(400).json(err);
+  });
+});
 router.put('/:id', (req, res) => {
   console.log(`
   
