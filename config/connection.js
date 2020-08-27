@@ -9,6 +9,9 @@ let sequelize;
 //when the app is depoyed, it will have access to heroku's process.env.JAWSDB_URL
 // environment variable and use that value to connect.
 // otherwise it iwll continue using the local host config
+
+//now if deployed to heroku i can still hit endpoints with insomnia core
+// just with the new URL https://just-tech-news-djviking.herokuapp.com/ 
 if (process.env.JAWSDB_URL) {
   sequelize = new Sequelize(process.env.JAWSDB_URL);
 } else {
