@@ -1,6 +1,7 @@
 const User = require('./User.js');
 const Post = require('./Post.js');
 const Vote = require('./Vote.js');
+const Comment = require('./Comment.js');
 
 //one user can have many posts...but only a post only has one user
 User.hasMany(Post, 
@@ -53,5 +54,31 @@ Post.hasMany(Vote,
   }  
 );
 
+Comment.belongsTo(User,
+  {
+    foreignKey: 'user_id'
+  }
+);
+Comment.belongsTo(Post, 
+  {
+    foreignKey: 'post_id'
+  }  
+);
+User.hasMany(Comment,
+  {
+    foreignKey: 'user_id'
+  }  
+);
+Post.hasMany(Comment,
+  {
+    foreignKey: 'post_id'
+  }  
+);
 
-module.exports = { User, Post, Vote };
+//we dont have to specify Comment as a "through" table
+//like for Vote. this is becuase we dont need to access
+// Post through Comment; we just want to see the user's comment and which
+// post it was for. Thus the query will be slightly different
+
+
+module.exports = { User, Post, Vote, Comment };
