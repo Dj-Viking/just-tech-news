@@ -45,7 +45,7 @@ router.get('/', (req, res) => {
     }
   )
   .then(dbPostData => {
-    console.log(dbPostData);
+    //console.log(dbPostData);
     res.json(dbPostData);
   })
   .catch(err => {
@@ -93,7 +93,7 @@ router.get('/:id', (req, res) => {
       );
       return;
     } else {
-      console.log(dbPostData);
+      //console.log(dbPostData);
       res.json(dbPostData);
     }
   })
@@ -118,7 +118,7 @@ router.post('/', (req, res) => {
     }
   )
   .then(dbPostData => {
-    console.log(dbPostData);
+    //console.log(dbPostData);
     res.json(dbPostData);
   })
   .catch(err => {
@@ -148,7 +148,7 @@ router.put('/upvote', (req, res) => {
   //custom static method created in models/Post.js
   Post.upvote(req.body, { Vote })
   .then(updatedPostData => {
-    console.log(updatedPostData);
+    //console.log(updatedPostData);
     res.json(updatedPostData);
   })
   .catch(err => {
@@ -180,7 +180,7 @@ router.put('/:id', (req, res) => {
       );
       return;
     } else {
-      console.log(dbPostData);
+      //console.log(dbPostData);
       res.json(dbPostData);
     }
   })
@@ -215,7 +215,7 @@ router.delete('/:id', (req, res) => {
       );
         return;
     } else {
-      console.log(dbPostData);
+      //console.log(dbPostData);
       res.json(dbPostData);
     }
   })

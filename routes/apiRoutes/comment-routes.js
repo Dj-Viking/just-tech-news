@@ -19,7 +19,7 @@ router.post('/', (req, res) => {
     }
   )
   .then(dbCommentData => {
-    console.log(dbCommentData);
+   // console.log(dbCommentData);
     res.json(dbCommentData);
   })
   .catch(err => {
@@ -45,7 +45,7 @@ router.delete('/:id', (req, res) => {
       );
       return;
     } else {
-      console.log(dbCommentData);
+      //console.log(dbCommentData);
       res.json(dbCommentData);
     }
   })
