@@ -97,7 +97,33 @@ router.post('/', (req, res) => {
   });
 });
 
-//update a posts title
+//PUT upvote /api/posts/upvote
+router.put('/upvote', (req, res) => {
+  console.log(`
+  
+  `)
+  console.log('\x1b[33m', 'client request to update a post by casting an upvote by user_id and post_id', '\x1b[00m');
+  Vote.create({
+    user_id: req.body.user_id,
+    post_id: req.body.post_id
+  })
+    .then(dbPostData => res.json(dbPostData))
+    .catch(err => res.json(err));
+});
+
+// router.put('/upvote', (req, res) => {
+  // console.log(`
+  
+  // `)
+  // console.log('\x1b[33m', 'client request to update a post by casting an upvote by user_id and post_id', '\x1b[00m');
+//   // custom static method created in models/Post.js
+//   Post.upvote(req.body, { Vote })
+//     .then(updatedPostData => res.json(updatedPostData))
+//     .catch(err => {
+//       console.log(err);
+//       res.status(400).json(err);
+//     });
+// });
 router.put('/:id', (req, res) => {
   console.log(`
   
@@ -114,10 +140,10 @@ router.put('/:id', (req, res) => {
     }
   )
   .then(dbPostData => {
-    if (!dbPostData) {
+    if (dbPostData[0] === 0 || !dbPostData) {
       res.status(404).json(
         {
-          message: 'No post found with that user id.'
+          message: `No post found with the id of ${req.params.id}`
         }
       );
       return;
@@ -131,6 +157,9 @@ router.put('/:id', (req, res) => {
     res.status(500).json(err);
   });
 });
+
+
+//update a posts title
 
 //delete a post by id
 router.delete('/:id', (req, res) => {
@@ -164,24 +193,7 @@ router.delete('/:id', (req, res) => {
   });
 });
 
-//PUT upvote /api/posts/upvote
-router.put('/upvote', (req, res) => {
-  console.log(`
-  
-  `)
-  console.log('\x1b[33m', 'client request to update a post by casting an upvote by user_id and post_id', '\x1b[00m');+
-  Vote.create(
-    {
-      user_id: req.body.user_id,
-      post_id: req.body.post_id
-    }
-  )
-  .then(dbPostData => {
-    console.log(dbPostData);
-    res.json(dbPostData);
-  })
-  .catch(err => err.json(err));
-});
+
 
 module.exports = router;
 
