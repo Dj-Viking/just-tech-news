@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const sequelize = require('../../config/connection.js');
 //including user into the post routes so we can do JOIN's at some point
-const { Post, User, Vote } = require('../../models');
+const { Post, User, Vote, Comment } = require('../../models');
 
 //route to retrieve all posts in the database
 
@@ -29,8 +29,17 @@ router.get('/', (req, res) => {
       //JOIN 
       include: [
         {
-          model: User,
-          attributes: ['username']
+          model: Comment,
+          attributes: [
+            'id', 
+            'comment_text', 
+            'post_id', 
+            'user_id'
+          ],
+          include: {
+            model: User,
+            attributes: ['username']
+          }
         }
       ]
     }
